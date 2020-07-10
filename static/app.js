@@ -1,5 +1,6 @@
 let $score = 0;
 let $seconds = 60;
+let $checked = [];
 
 // Sets the timer for the game
 let $timer = setInterval(() => {
@@ -30,7 +31,7 @@ $('#btn').on('click', function(e) {
 		alert('please put in a word');
 		return;
 	} else {
-		tryGuess();
+		checkIfGuessed();
 	}
 });
 
@@ -38,6 +39,20 @@ $('#btn').on('click', function(e) {
 const showMessage = function(msg) {
 	$('#msg').text(msg);
 };
+
+//Will check to see if a word was already tried
+async function checkIfGuessed() {
+	let $gword = $('#frm').val();
+
+	if (jQuery.inArray($gword, $checked) >= 0) {
+		showMessage("You've already guessed that word. Try another");
+		console.log($checked, $gword);
+	} else {
+		$checked.push($gword);
+		tryGuess();
+		console.log($checked);
+	}
+}
 
 // checks the input word against the database and returns a result
 // Will also update the score board
